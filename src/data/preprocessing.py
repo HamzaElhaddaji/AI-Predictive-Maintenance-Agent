@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 
 OP_SETTINGS = ["op_setting_1", "op_setting_2", "op_setting_3"]
@@ -19,8 +20,10 @@ def load_raw(path):
 
 
 def add_regime(df):
+    # regime = settings 1 and 3 rounded to the unit (setting 2 is noisy around its value)
     df = df.copy()
-    df["regime"] = df[OP_SETTINGS].round(1).astype(str).agg("|".join, axis=1)
+    keys = df[["op_setting_1", "op_setting_3"]].round(0).astype(int).astype(str)
+    df["regime"] = keys.agg("|".join, axis=1)
     return df
 
 
@@ -35,6 +38,7 @@ def normalize(df, stats, sensors):
     df = df.copy()
     m = mean.loc[df["regime"]].to_numpy()
     s = std.loc[df["regime"]].to_numpy()
+    s = np.where(s < 1e-8, 1.0, s)  # constant sensor in a regime -> z = 0, not NaN
     df[sensors] = (df[sensors].to_numpy() - m) / s
     return df
 
