@@ -1,0 +1,21 @@
+{
+  "sources": [
+    {
+      "file": "nasa-damage-propagation.pdf",
+      "url": "https://ntrs.nasa.gov/api/citations/20090029214/downloads/20090029214.pdf",
+      "title": "Damage Propagation Modeling for Aircraft Engine Prognostics",
+      "authors": [
+        "Abhinav Saxena",
+        "Kai Goebel",
+        "Don Simon",
+        "Neil Eklund"
+      ],
+      "retrieved": "2026-11-03",
+      "type": "technical research paper; not an equipment maintenance manual"
+    },
+    {
+      "file": "maintenance-guide.md",
+      "type": "project-authored demonstration guidance; not manufacturer procedures"
+    }
+  ]
+}

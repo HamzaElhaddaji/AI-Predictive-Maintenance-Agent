@@ -1,0 +1,49 @@
+services:
+  train:
+    build: .
+    command: python -m src.maintenance.cli train
+    volumes:
+      - model-data:/app/models
+  qdrant:
+    image: qdrant/qdrant:v1.13.4
+    volumes:
+      - qdrant-data:/qdrant/storage
+  ml:
+    build: .
+    volumes:
+      - model-data:/app/models
+    depends_on:
+      train:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,json; assert json.load(urllib.request.urlopen('http://localhost:8000/health'))['model_ready']"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+  agent:
+    build: .
+    environment:
+      QDRANT_URL: http://qdrant:6333
+      ML_SERVICE_URL: http://ml:8000
+    volumes:
+      - model-data:/app/models
+      - ./knowledge:/app/knowledge:ro
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      ml:
+        condition: service_healthy
+      qdrant:
+        condition: service_started
+  ui:
+    build: .
+    command: streamlit run src/maintenance/ui.py --server.address=0.0.0.0 --server.port=8501
+    environment:
+      API_URL: http://agent:8000
+    ports:
+      - "127.0.0.1:8501:8501"
+    depends_on:
+      - agent
+volumes:
+  model-data:
+  qdrant-data:

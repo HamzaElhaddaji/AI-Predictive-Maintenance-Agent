@@ -29,6 +29,12 @@ def _rul_to_risk_level(rul):
 
 
 def load_model(model_path=MODEL_PATH):
+    portable = os.path.join(os.path.dirname(model_path), "rul_model.ubj")
+    if os.path.isfile(portable) and model_path == MODEL_PATH:
+        from xgboost import XGBRegressor
+        model = XGBRegressor()
+        model.load_model(portable)
+        return model
     return joblib.load(model_path)
 
 
