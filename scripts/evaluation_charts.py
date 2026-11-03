@@ -48,7 +48,7 @@ axes[1, 1].axvline(
 )
 axes[1, 1].set(
     xlabel="Alert threshold",
-    ylabel="10 Ã— FN + FP",
+    ylabel="10 * FN + FP",
     title="Test-set cost diagnostic (not used to tune)",
 )
 axes[1, 1].legend()
