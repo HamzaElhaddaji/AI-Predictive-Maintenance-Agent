@@ -99,9 +99,16 @@ nb.metadata["kernelspec"] = {
     "language": "python",
     "name": "maintenance",
 }
+# Keep source notebooks small and stable in Git; rendered outputs are local artifacts.
+for index, cell in enumerate(nb.cells):
+    cell.id = f"exploration-{index:02d}"
+target = root / "notebooks/01_dataset_exploration.ipynb"
+nbformat.write(nb, target)
 NotebookClient(
     nb, timeout=180, kernel_name="maintenance", resources={"metadata": {"path": str(root)}}
 ).execute()
-target = root / "notebooks/01_dataset_exploration.ipynb"
-nbformat.write(nb, target)
-print(target)
+executed = root / "reports/01_dataset_exploration.executed.ipynb"
+executed.parent.mkdir(parents=True, exist_ok=True)
+nbformat.write(nb, executed)
+print(f"Source: {target}")
+print(f"Executed: {executed}")

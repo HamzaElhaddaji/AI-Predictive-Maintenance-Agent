@@ -16,6 +16,7 @@ docker compose config --quiet
 For changes to training or feature definitions, rerun training and inspect the held-out
 metrics, saved split IDs, and evaluation charts. Do not tune against the test engines.
 For notebook changes, execute all cells and confirm there are no error outputs.
+Commit source cells only; keep rendered notebook outputs in the ignored reports directory.
 For interface changes, exercise the upload-to-report flow with the API running.
 
 The completion work is on branch codex/complete-maintenance-platform.

@@ -125,12 +125,16 @@ These small contract cases do not establish real manual retrieval quality or liv
 reliability. Pytest additionally checks malformed inputs, causality, engine isolation,
 duplicate handling, API uploads, missing machines, invalid LLM plans, and citations.
 
-Rebuild the exploration notebook:
+Rebuild and execute the exploration notebook:
 
 ```sh
 python -m ipykernel install --prefix .venv --name maintenance
 python scripts/build_exploration.py
 ```
+
+The source notebook stays free of generated cell outputs so pull requests remain
+reviewable. The executed notebook, including tables and charts, is saved to
+`reports/01_dataset_exploration.executed.ipynb`, which is ignored by Git.
 
 ## Agent behavior and verification
 
@@ -182,7 +186,7 @@ claim. The historical numbers in `docs/model_evaluation.md` are retained as prio
 
 - `src/maintenance/`: cleaner, features, training, evaluation, analysis, retrieval, agent, verification, traces, API, and UI.
 - `src/data/`, `src/tools/`, `src/agent/`: original RUL workflow.
-- `notebooks/01_dataset_exploration.ipynb`: executed exploration.
+- `notebooks/01_dataset_exploration.ipynb`: reproducible exploration; executed output is saved under `reports/`.
 - `test/`: original and new integration/contract tests.
 - `scripts/`: exploration, charts, and Windows launcher.
 - `knowledge/`: source corpus and provenance.
