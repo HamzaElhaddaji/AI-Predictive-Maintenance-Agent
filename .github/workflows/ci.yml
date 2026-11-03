@@ -1,0 +1,18 @@
+name: checks
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.lock
+      - run: ruff check src/maintenance test/test_maintenance.py
+      - name: Keep exploration notebook outputs out of source control
+        run: python -c "import nbformat; n = nbformat.read('notebooks/01_dataset_exploration.ipynb', as_version=4); assert all(not c.get('outputs') and c.get('execution_count') is None for c in n.cells if c.cell_type == 'code')"
+      - run: pytest -q
+      - run: python -m src.maintenance.evaluate_system
+      - run: docker compose config --quiet

@@ -1,3 +1,8 @@
+> Historical RUL results from the original repository. The original split and runtime
+> were not independently reproduced here. Current, reproducible failure-classifier
+> results are in README.md and models/maintenance.metrics.json. The compatibility
+> RUL model was rebuilt and has no new held-out performance claim.
+
 ## ML Evaluation
 
 ## Objective
